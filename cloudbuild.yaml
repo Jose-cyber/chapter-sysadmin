@@ -53,9 +53,9 @@ steps:
 
 availableSecrets:
   secretManager:
-  - versionName: projects/164405315743//secrets/DOCKERHUB_PWD/versions/latest
+  - versionName: projects/164405315743//secrets/DOCKERHUB_PWD/versions/1
     env: 'DOCKERHUB_PWD'
-  - versionName: projects/164405315743/secrets/DOCKERHUB_USR/versions/latest
+  - versionName: projects/164405315743/secrets/DOCKERHUB_USR/versions/1
     env: 'DOCKERHUB_USR'
-  - versionName: projects/164405315743/secrets/KUBECONFIG/versions/latest
+  - versionName: projects/164405315743/secrets/KUBECONFIG/versions/1
     env: KUBECONFIG
