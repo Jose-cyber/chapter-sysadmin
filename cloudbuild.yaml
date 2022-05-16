@@ -1,5 +1,5 @@
 steps:
-  - name: 'josecyber/chapter_sysadmin'
+  - name: 'josecyber/cloudbuild_image'
     id: Environment
     entrypoint: bash
     args: 
@@ -8,19 +8,36 @@ steps:
         echo $REPO_NAME
         echo $BRANCH_NAME
         echo $SHORT_SHA
-    waitFor: [-]
+    waitFor: []
 
-  - name: 'josecyber/chapter_sysadmin'
+  - name: 'josecyber/cloudbuild_image'
+    id: Git Clone
+    entrypoint: bash
+    args: 
+      - -c
+      - |
+        
+        git_user=$(echo $REPO_NAME | cut -d"_" -f2)
+        project_name=$(echo $REPO_NAME | cut -d"_" -f3)
+
+        echo 'Git Clone' | figlet 
+
+        git clone https://$git_user:$GITTOKEN@github.com/$git_user/$project_name
+    
+    secretEnv: ['GITTOKEN']
+  
+  - name: 'josecyber/cloudbuild_image'
     id: Docker build
     entrypoint: bash
     args: 
       - -c
       - |
         echo 'Docker build' | figlet 
+        cd $project_name
         docker build -t chapter_sysadmin -f /src/dockerfile .
-    waitFor: [Environment]
+    waitFor: [Git Clone]
 
-  - name: 'josecyber/chapter_sysadmin'
+  - name: 'josecyber/cloudbuild_image'
     id: Docker vulnarability
     entrypoint: bash
     args: 
@@ -29,20 +46,20 @@ steps:
         echo $REPO_NAME
     waitFor: [Docker build]
   
-  - name: 'josecyber/chapter_sysadmin'
+  - name: 'josecyber/cloudbuild_image'
     id: Docker push
     entrypoint: bash
     args: 
       - -c
       - |
         echo 'Docker Push' | figlet
-        docker tag josecyber/chapter_sysadmin:$SHORT_SHA
-        docker push josecyber/chapter_sysadmin:$SHORT_SHA
+        docker tag josecyber/cloudbuild_image:$SHORT_SHA
+        docker push josecyber/cloudbuild_image:$SHORT_SHA
 
     secretEnv: ['DOCKERHUB_USR', 'DOCKERHUB_PWD']
     waitFor: [Docker vulnarability]
   
-  - name: 'josecyber/chapter_sysadmin'
+  - name: 'josecyber/cloudbuild_image'
     id: Kubecost
     entrypoint: bash
     args: 
@@ -57,3 +74,5 @@ availableSecrets:
     env: 'DOCKERHUB_PWD'
   - versionName: projects/164405315743/secrets/DOCKERHUB_USR/versions/1
     env: 'DOCKERHUB_USR'
+  - versionName: projects/164405315743/secrets/GITTOKEN/versions/1
+    env: 'GITTOKEN'
