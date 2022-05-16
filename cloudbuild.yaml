@@ -24,7 +24,7 @@ steps:
 
     #    git clone https://$git_user:$GIT_TOKEN@github.com/$git_user/$project_name
     
-    #secretEnv: ['GIT_TOKEN']
+    secretEnv: ['git_token']
     waitFor: [Environment]
   
   - name: 'josecyber/cloudbuild_image'
