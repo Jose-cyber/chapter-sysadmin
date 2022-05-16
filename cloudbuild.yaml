@@ -47,7 +47,7 @@ steps:
         source /workspace/build_vars 
     
         echo 'docker build' | figlet 
-        cd $project_name && docker build -t $project_name -f /src/dockerfile .
+        docker build -t $project_name -f $project_name/src/dockerfile .
 
     waitFor: [Git Clone]
 
