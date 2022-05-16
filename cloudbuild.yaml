@@ -18,12 +18,20 @@ steps:
       - -c
       - |
         source /workspace/build_vars 
+
         git_user=$(echo $REPO_NAME | cut -d"_" -f2)
         project_name=$(echo $REPO_NAME | cut -d"_" -f3)
         echo 'Git Clone' | figlet 
         
         git clone https://$git_user:$git_token@github.com/$git_user/$project_name
-    
+
+        if [ -d $project_name ];then
+           echo 'repositorio clonado'
+        else
+           echo 'erro ao clonar repositorio'
+        fi 
+
+        env > /workspace/build_vars
     secretEnv: ['git_token']
     waitFor: [Environment]
   
@@ -33,9 +41,12 @@ steps:
     args: 
       - -c
       - |
+        source /workspace/build_vars 
+    
         echo 'Docker build' | figlet 
         cd $project_name
-        docker build -t chapter_sysadmin -f /src/dockerfile .
+        docker build -t $project_name -f /src/dockerfile .
+
     waitFor: [Git Clone]
 
   - name: 'josecyber/cloudbuild_image'
@@ -77,3 +88,5 @@ availableSecrets:
     env: 'DOCKERHUB_USR'
   - versionName: projects/164405315743/secrets/git_token/versions/1
     env: 'git_token'
+
+timeout: 2500s
