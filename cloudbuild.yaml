@@ -70,13 +70,13 @@ steps:
 
         echo 'Docker Push' | figlet
         
-        echo $$DOCKERHUB_PWD > senha.txt
-        cat senha.txt | docker login --username=$$DOCKERHUB_USR --password-stdin
+        echo $dockerhub_psw > senha.txt
+        cat senha.txt | docker login --username=$dockerhub_usr --password-stdin
           
-        docker tag $project_name  $DOCKERHUB_USR/$project_name
-        docker push $DOCKERHUB_USR/$project_name
+        docker tag $project_name  $dockerhub_usr/$project_name
+        docker push $dockerhub_usr/$project_name
 
-    secretEnv: ['DOCKERHUB_USR', 'DOCKERHUB_PWD']
+    secretEnv: ['dockerhub_usr', 'dockerhub_psw']
     waitFor: [Docker vulnarability]
   
   - name: 'josecyber/cloudbuild_image'
