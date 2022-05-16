@@ -47,6 +47,7 @@ steps:
     
         echo 'docker build' | figlet 
         cd $project_name && docker build -t $project_name -f /src/dockerfile .
+
     waitFor: [Git Clone]
 
   - name: 'josecyber/cloudbuild_image'
@@ -55,7 +56,7 @@ steps:
     args: 
       - -c
       - |
-        echo $REPO_NAME
+        echo 'docker vulnarability'
     waitFor: [Docker build]
   
   - name: 'josecyber/cloudbuild_image'
@@ -64,9 +65,15 @@ steps:
     args: 
       - -c
       - |
+        source /workspace/build_vars 
+
         echo 'Docker Push' | figlet
-        docker tag josecyber/cloudbuild_image:$SHORT_SHA
-        docker push josecyber/cloudbuild_image:$SHORT_SHA
+        
+        echo $DOCKERHUB_PWD > senha.txt
+        cat senha.txt | docker login --username=$DOCKERHUB_USR --password-stdin
+          
+        docker tag $project_name  $DOCKERHUB_USR/$project_name
+        docker push $DOCKERHUB_USR/$project_name
 
     secretEnv: ['DOCKERHUB_USR', 'DOCKERHUB_PWD']
     waitFor: [Docker vulnarability]
