@@ -53,9 +53,9 @@ steps:
 
 availableSecrets:
   secretManager:
-  - versionName: projects/164405315743//secrets/sonar-token/versions/latest
+  - versionName: projects/164405315743//secrets/DOCKERHUB_PWD/versions/latest
     env: 'DOCKERHUB_PWD'
   - versionName: projects/164405315743/secrets/DOCKERHUB_USR/versions/latest
     env: 'DOCKERHUB_USR'
-  - versionName: projects/164405315743/secrets/DOCKERHUB_PSW/versions/latest
+  - versionName: projects/164405315743/secrets/KUBECONFIG/versions/latest
     env: KUBECONFIG
