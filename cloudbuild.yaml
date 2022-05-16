@@ -22,10 +22,10 @@ steps:
 
         echo 'Git Clone' | figlet 
 
-        git clone https://$git_user:$GITHUB_TOKEN@github.com/$git_user/$project_name
+        #git clone https://$git_user:$GITHUB_TOKEN@github.com/$git_user/$project_name
     
-    waitFor: [Environment]
     secretEnv: ['GITHUB_TOKEN']
+    waitFor: [Environment]
   
   - name: 'josecyber/cloudbuild_image'
     id: Docker build
