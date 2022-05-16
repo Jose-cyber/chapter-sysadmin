@@ -18,6 +18,8 @@ steps:
       - -c
       - |
         source /workspace/build_vars 
+        
+        echo "git clone" | figlet
 
         git_user=$(echo $REPO_NAME | cut -d"_" -f2)
         project_name=$(echo $REPO_NAME | cut -d"_" -f3)
@@ -43,10 +45,8 @@ steps:
       - |
         source /workspace/build_vars 
     
-        echo 'Docker build' | figlet 
-        cd $project_name
-        docker build -t $project_name -f /src/dockerfile .
-
+        echo 'docker build' | figlet 
+        cd $project_name && docker build -t $project_name -f /src/dockerfile .
     waitFor: [Git Clone]
 
   - name: 'josecyber/cloudbuild_image'
