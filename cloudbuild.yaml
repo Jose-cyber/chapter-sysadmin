@@ -1,5 +1,4 @@
 steps:
-  #Este step irá definir o repositório de manifestos kubernetes e exportar algumas variaves de ambiente.
   - name: 'josecyber/cloudbuild'
     id: Environment
     entrypoint: bash
@@ -20,7 +19,7 @@ steps:
       - |
         echo 'Docker build' | figlet 
         docker build -t chapter_sysadmin -f /src/dockerfile .
-    waitFor: [Docker vulnarability]
+    waitFor: [Environment]
 
   - name: 'josecyber/cloudbuild'
     id: Docker vulnarability
@@ -44,7 +43,7 @@ steps:
         docker push josecyber/chapter_sysadmin:$SHORT_SHA
 
     secretEnv: ['DOCKERHUB_USR', 'DOCKERHUB_PWD']
-    waitFor: [Build]
+    waitFor: [Docker vulnarability]
   
   - name: 'josecyber/cloudbuild'
     id: Kubecost
