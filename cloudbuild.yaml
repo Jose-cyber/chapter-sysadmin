@@ -45,10 +45,12 @@ steps:
       - -c
       - |
         source /workspace/build_vars 
-    
+        
+        echo $project_name
+
         echo 'docker build' | figlet 
         docker build -t $project_name -f $project_name/src/dockerfile .
-
+           
     waitFor: [Git Clone]
 
   - name: 'josecyber/cloudbuild_image'
