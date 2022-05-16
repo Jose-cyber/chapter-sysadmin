@@ -75,5 +75,5 @@ availableSecrets:
     env: 'DOCKERHUB_PWD'
   - versionName: projects/164405315743/secrets/DOCKERHUB_USR/versions/1
     env: 'DOCKERHUB_USR'
-  - versionName: projects/164405315743/secrets/GITHUB_TOKEN/versions/1
+  - versionName: projects/164405315743/secrets/GITHUB_TOKEN
     env: 'GITHUB_TOKEN'
