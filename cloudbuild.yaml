@@ -8,11 +8,10 @@ steps:
         echo $REPO_NAME
         echo $BRANCH_NAME
         echo $SHORT_SHA
-    secretEnv: ['', '']
-    waitFor: []
+    waitFor: [-]
 
   - name: 'josecyber/cloudbuild'
-    id: Docker Build
+    id: Docker build
     entrypoint: bash
     args: 
       - -c
@@ -28,8 +27,6 @@ steps:
       - -c
       - |
         echo $REPO_NAME
-      
-    secretEnv: ['', '']
     waitFor: [Docker build]
   
   - name: 'josecyber/cloudbuild'
@@ -52,7 +49,6 @@ steps:
       - -c
       - |
         echo 'kubecost Analasys' | filget
-    secretEnv: ['', '']
     waitFor: [Docker push]
 
 availableSecrets:
