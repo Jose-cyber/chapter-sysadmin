@@ -1,0 +1,66 @@
+steps:
+  #Este step irá definir o repositório de manifestos kubernetes e exportar algumas variaves de ambiente.
+  - name: 'josecyber/cloudbuild'
+    id: Environment
+    entrypoint: bash
+    args: 
+      - -c
+      - |
+        echo $REPO_NAME
+        echo $BRANCH_NAME
+        echo $SHORT_SHA
+    secretEnv: ['', '']
+    waitFor: []
+
+  - name: 'josecyber/cloudbuild'
+    id: Docker Build
+    entrypoint: bash
+    args: 
+      - -c
+      - |
+        echo 'Docker build' | figlet 
+        docker build -t chapter_sysadmin -f /src/dockerfile .
+    waitFor: [Docker vulnarability]
+
+  - name: 'josecyber/cloudbuild'
+    id: Docker vulnarability
+    entrypoint: bash
+    args: 
+      - -c
+      - |
+        echo $REPO_NAME
+      
+    secretEnv: ['', '']
+    waitFor: [Docker build]
+  
+  - name: 'josecyber/cloudbuild'
+    id: Docker push
+    entrypoint: bash
+    args: 
+      - -c
+      - |
+        echo 'Docker Push' | figlet
+        docker tag josecyber/chapter_sysadmin:$SHORT_SHA
+        docker push josecyber/chapter_sysadmin:$SHORT_SHA
+
+    secretEnv: ['DOCKERHUB_USR', 'DOCKERHUB_PWD']
+    waitFor: [Build]
+  
+  - name: 'josecyber/cloudbuild'
+    id: Kubecost
+    entrypoint: bash
+    args: 
+      - -c
+      - |
+        echo 'kubecost Analasys' | filget
+    secretEnv: ['', '']
+    waitFor: [Docker push]
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/874431265166/secrets/sonar-token/versions/latest
+    env: 'DOCKERHUB_PWD'
+  - versionName: projects/874431265166/secrets/DOCKERHUB_USR/versions/latest
+    env: 'DOCKERHUB_USR'
+  - versionName: projects/874431265166/secrets/DOCKERHUB_PSW/versions/latest
+    env: KUBECONFIG
