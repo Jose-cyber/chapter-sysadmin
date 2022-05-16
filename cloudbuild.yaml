@@ -14,6 +14,7 @@ steps:
   - name: 'josecyber/cloudbuild_image'
     id: Git Clone
     entrypoint: bash
+    allow_failure: true
     args: 
       - -c
       - |
@@ -30,7 +31,7 @@ steps:
         if [ -d $project_name ];then
            echo 'repositorio clonado'
         else
-           echo 'erro ao clonar repositorio'
+           echo 'erro ao clonar repositorio' | figlet
         fi 
 
         env > /workspace/build_vars
@@ -69,8 +70,8 @@ steps:
 
         echo 'Docker Push' | figlet
         
-        echo $DOCKERHUB_PWD > senha.txt
-        cat senha.txt | docker login --username=$DOCKERHUB_USR --password-stdin
+        echo $$DOCKERHUB_PWD > senha.txt
+        cat senha.txt | docker login --username=$$DOCKERHUB_USR --password-stdin
           
         docker tag $project_name  $DOCKERHUB_USR/$project_name
         docker push $DOCKERHUB_USR/$project_name
