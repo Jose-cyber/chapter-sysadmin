@@ -8,6 +8,9 @@ steps:
         echo $REPO_NAME
         echo $BRANCH_NAME
         echo $SHORT_SHA
+        git_user=$(echo $REPO_NAME | cut -d"_" -f2)
+        project_name=$(echo $REPO_NAME | cut -d"_" -f3)
+
         env > /workspace/build_vars
     waitFor: [-]
 
@@ -19,11 +22,7 @@ steps:
       - -c
       - |
         source /workspace/build_vars 
-        
-        echo "git clone" | figlet
-
-        git_user=$(echo $REPO_NAME | cut -d"_" -f2)
-        project_name=$(echo $REPO_NAME | cut -d"_" -f3)
+      
         echo 'Git Clone' | figlet 
         
         git clone https://$git_user:$git_token@github.com/$git_user/$project_name
@@ -33,8 +32,6 @@ steps:
         else
            echo 'erro ao clonar repositorio' | figlet
         fi 
-
-        env > /workspace/build_vars
     secretEnv: ['git_token']
     waitFor: [Environment]
   
@@ -45,13 +42,11 @@ steps:
       - -c
       - |
         source /workspace/build_vars 
-        
-        ls
-
+      
         echo $project_name | figlet
 
         echo 'docker build' | figlet 
-       # docker build -t $project_name -f $project_name/src/dockerfile .
+        docker build -t $project_name -f $project_name/src/dockerfile .
            
     waitFor: [Git Clone]
 
