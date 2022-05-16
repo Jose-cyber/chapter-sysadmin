@@ -22,7 +22,7 @@ steps:
         project_name=$(echo $REPO_NAME | cut -d"_" -f3)
         echo 'Git Clone' | figlet 
         
-        git clone https://$git_user:$GIT_TOKEN@github.com/$git_user/$project_name
+        git clone https://$git_user:$git_token@github.com/$git_user/$project_name
     
     secretEnv: ['git_token']
     waitFor: [Environment]
