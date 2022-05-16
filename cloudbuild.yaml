@@ -8,6 +8,7 @@ steps:
         echo $REPO_NAME
         echo $BRANCH_NAME
         echo $SHORT_SHA
+        env > /workspace/build_vars
     waitFor: [-]
 
   - name: 'josecyber/cloudbuild_image'
@@ -16,13 +17,12 @@ steps:
     args: 
       - -c
       - |
-        
+        source /workspace/build_vars 
         git_user=$(echo $REPO_NAME | cut -d"_" -f2)
         project_name=$(echo $REPO_NAME | cut -d"_" -f3)
-
         echo 'Git Clone' | figlet 
-
-    #    git clone https://$git_user:$GIT_TOKEN@github.com/$git_user/$project_name
+        
+        git clone https://$git_user:$GIT_TOKEN@github.com/$git_user/$project_name
     
     secretEnv: ['git_token']
     waitFor: [Environment]
