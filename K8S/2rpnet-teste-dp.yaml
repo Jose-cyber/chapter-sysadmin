@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 2rpnet-teste-sec
+  namespace: 2rpnet
+  labels:
+    app: 2rpweb-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: 2rpweb-server
+  template:
+    metadata:
+      labels:
+        app: 2rpweb-server
+    spec:
+      containers:
+      - name: 2rpteste
+        image: josecyber/2rpteste
+        envFrom:
+        - secretRef:
+            name: 2rpnet-teste-sec
+        ports:
+        - containerPort: 80
+        
+         

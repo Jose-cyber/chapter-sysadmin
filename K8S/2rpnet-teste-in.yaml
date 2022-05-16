@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bot-broadcast-in
+  namespace: bot-broadcast
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  tls:
+  - hosts:
+    - bot-broadcast-hml.pernambucanas.com.br
+    secretName: pernambucanas-tls 
+  rules:
+  - host: bot-broadcast-hml.pernambucanas.com.br
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bot-broadcast-svc
+            port: 
+              number: 80
