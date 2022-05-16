@@ -22,9 +22,9 @@ steps:
 
         echo 'Git Clone' | figlet 
 
-        git clone https://$git_user:$GIT_TOKEN@github.com/$git_user/$project_name
+    #    git clone https://$git_user:$GIT_TOKEN@github.com/$git_user/$project_name
     
-    secretEnv: ['GIT_TOKEN']
+    #secretEnv: ['GIT_TOKEN']
     waitFor: [Environment]
   
   - name: 'josecyber/cloudbuild_image'
@@ -75,5 +75,5 @@ availableSecrets:
     env: 'DOCKERHUB_PWD'
   - versionName: projects/164405315743/secrets/DOCKERHUB_USR/versions/1
     env: 'DOCKERHUB_USR'
-  - versionName: projects/164405315743/secrets/GIT_TOKEN
+  - versionName: projects/164405315743/secrets/GIT_TOKEN/versions/1
     env: 'GIT_TOKEN'
