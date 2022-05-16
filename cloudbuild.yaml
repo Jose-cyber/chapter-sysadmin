@@ -1,5 +1,5 @@
 steps:
-  - name: 'josecyber/cloudbuild'
+  - name: 'josecyber/chapter_sysadmin'
     id: Environment
     entrypoint: bash
     args: 
@@ -10,7 +10,7 @@ steps:
         echo $SHORT_SHA
     waitFor: [-]
 
-  - name: 'josecyber/cloudbuild'
+  - name: 'josecyber/chapter_sysadmin'
     id: Docker build
     entrypoint: bash
     args: 
@@ -20,7 +20,7 @@ steps:
         docker build -t chapter_sysadmin -f /src/dockerfile .
     waitFor: [Environment]
 
-  - name: 'josecyber/cloudbuild'
+  - name: 'josecyber/chapter_sysadmin'
     id: Docker vulnarability
     entrypoint: bash
     args: 
@@ -29,7 +29,7 @@ steps:
         echo $REPO_NAME
     waitFor: [Docker build]
   
-  - name: 'josecyber/cloudbuild'
+  - name: 'josecyber/chapter_sysadmin'
     id: Docker push
     entrypoint: bash
     args: 
@@ -42,7 +42,7 @@ steps:
     secretEnv: ['DOCKERHUB_USR', 'DOCKERHUB_PWD']
     waitFor: [Docker vulnarability]
   
-  - name: 'josecyber/cloudbuild'
+  - name: 'josecyber/chapter_sysadmin'
     id: Kubecost
     entrypoint: bash
     args: 
