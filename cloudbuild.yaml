@@ -19,9 +19,7 @@ steps:
       - -c
       - |
         source /workspace/build_vars 
-        
-
-
+      
         git_user=$(echo $REPO_NAME | cut -d"_" -f2)
         project_name=$(echo $REPO_NAME | cut -d"_" -f3)
       
@@ -61,7 +59,15 @@ steps:
     args: 
       - -c
       - |
+        project_name=$(echo $REPO_NAME | cut -d"_" -f3)
         echo 'docker vulnarability'
+
+        echo $dockerhub_psw > senha.txt
+        cat senha.txt | docker login --username=$dockerhub_usr --password-stdin
+
+        docker scan $project_name --severity=medium
+        
+    secretEnv: ['dockerhub_usr', 'dockerhub_psw']
     waitFor: [Docker build]
   
   - name: 'josecyber/cloudbuild_image'
