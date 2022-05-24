@@ -65,7 +65,7 @@ steps:
         echo $dockerhub_psw > senha.txt
         cat senha.txt | docker login --username=$dockerhub_usr --password-stdin
 
-        docker scan $project_name --severity=medium
+        echo y | docker scan $project_name --severity=medium
         
     secretEnv: ['dockerhub_usr', 'dockerhub_psw']
     waitFor: [Docker build]
