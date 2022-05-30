@@ -9,7 +9,7 @@ steps:
         echo $BRANCH_NAME
         echo $SHORT_SHA
         env > /workspace/build_vars
-    waitFor: [-]
+    waitFor: []
 
   - name: 'josecyber/cloudbuild_image'
     id: Git Clone
@@ -55,6 +55,7 @@ steps:
 
   - name: 'josecyber/cloudbuild_image'
     id: Docker vulnarability
+    allow_failure: True
     entrypoint: bash
     args: 
       - -c
@@ -92,12 +93,26 @@ steps:
     waitFor: [Docker vulnarability]
   
   - name: 'josecyber/cloudbuild_image'
-    id: Kubecost
+    id: Kube kill
     entrypoint: bash
     args: 
       - -c
       - |
-        echo 'kubecost Analasys' | filget
+        echo 'kube kill' | filget 
+        
+        project_name=$(echo $REPO_NAME | cut -d"_" -f3)
+
+        $cluster_string_connection
+        
+         
+
+        ls -l
+
+        cd $project_name/K8S/
+
+        kubectl apply -f .
+
+    secretEnv: ['cluster_string_connection']
     waitFor: [Docker push]
 
 availableSecrets:
@@ -108,5 +123,7 @@ availableSecrets:
     env: 'dockerhub_usr'
   - versionName: projects/164405315743/secrets/git_token/versions/1
     env: 'git_token'
-
+  - versionName: projects/164405315743/secrets/cluster_string_connection/versions/1
+    env: 'cluster_string_connection'
+    
 timeout: 2500s

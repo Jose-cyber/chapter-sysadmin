@@ -1,27 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 2rpnet-teste-sec
-  namespace: 2rpnet
+  name: chapter-sysadmin-dp
+  namespace: chapter
   labels:
-    app: 2rpweb-server
+    app: chapter-sysadmin
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: 2rpweb-server
+      app: chapter-sysadmin
   template:
     metadata:
       labels:
-        app: 2rpweb-server
+        app: chapter-sysadmin
     spec:
       containers:
-      - name: 2rpteste
+      - name: chapter-sysadmin-container
         image: josecyber/2rpteste
         envFrom:
         - secretRef:
-            name: 2rpnet-teste-sec
-        ports:
-        - containerPort: 80
-        
+            name: chapter-sysadmin-es
+
          
