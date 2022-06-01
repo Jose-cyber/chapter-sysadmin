@@ -114,8 +114,7 @@ steps:
           do 
             kubectl -n $namespace delete pod $pod
             echo 'pod atualizado' | figlet
-          fi
-        done  
+          done  
         
     secretEnv: ['cluster_string_connection']
     waitFor: [Docker push]
