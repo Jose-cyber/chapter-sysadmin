@@ -1,0 +1,20 @@
+
+apiVersion: kubernetes-client.io/v1
+kind: ExternalSecret
+metadata:
+  namespace: chapter
+  name: chapter-sysadmin-es
+  #name of the External Secret and the generate k8s secret
+spec:
+  backendType: gcpSecretsManager
+  projectId: chapter-sysadmin
+  data:
+    - key: PORT # name of the GCP secret
+      version: 1 # version of the GCP secret
+      name: PORT # key name in the k8s secret
+      isBinary: false
+
+    - key: DEVOPS # name of the GCP secret
+      version: 1 # version of the GCP secret
+      name: DEVOPS # key name in the k8s secret
+      isBinary: false
