@@ -66,7 +66,7 @@ steps:
         echo $dockerhub_psw > senha.txt
         cat senha.txt | docker login --username=$dockerhub_usr --password-stdin
 
-        echo y | docker scan $project_name --severity=medium
+        docker scan $project_name --severity=medium
         
     secretEnv: ['dockerhub_usr', 'dockerhub_psw']
     waitFor: [Docker build]
@@ -104,14 +104,19 @@ steps:
 
         $cluster_string_connection
         
-         
+        namespace="chapter"
 
-        ls -l
+        nome_do_pod=$(kubectl -n $namespace get pods -o=name |  sed "s/^.\{4\}//")             
 
-        cd $project_name/K8S/
-
-        kubectl apply -f .
-
+        echo $nome_do_pod
+        
+        for pod in $nome_do_pod; 
+          do 
+            kubectl -n $namespace delete pod $pod
+            echo 'pod atualizado' | figlet
+          fi
+        done  
+        
     secretEnv: ['cluster_string_connection']
     waitFor: [Docker push]
 
