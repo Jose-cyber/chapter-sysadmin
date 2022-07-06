@@ -4,7 +4,8 @@ metadata:
   name: chapter-sysadmin-in
   namespace: chapter
   annotations:
-    kubernetes.io/ingress.class: "nginx"
+    # use the shared ingress-nginx
+    kubernetes.io/ingress.class: nginx
 spec:
   rules:
   - host: chapter-sysadmin.ddns.net
@@ -15,5 +16,6 @@ spec:
         backend:
           service:
             name: chapter-sysadmin-svc
-            port: 
+            port:
               number: 80
+

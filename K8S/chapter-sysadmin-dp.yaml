@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: chapter-sysadmin-container
-        image: josecyber/2rpteste
+        image: josecyber/chapter-sysadmin
         envFrom:
         - secretRef:
             name: chapter-sysadmin-es
