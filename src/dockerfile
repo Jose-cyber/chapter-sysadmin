@@ -2,5 +2,5 @@ FROM node:latest
 WORKDIR /src/app
 COPY . .
 RUN npm install dotenv
-RUN npm install sleep
+RUN npm install http
 CMD [ "node", "server.js" ]
