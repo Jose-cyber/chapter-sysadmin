@@ -1,6 +1,5 @@
 // IMPORTANDO BIBLIOTECAS NECESSARIAS
 const http = require('http');
-const sleep = require('sleep');
 require('dotenv/config');
 
 // WEBSERVER HTTP
@@ -11,8 +10,20 @@ http.createServer(function(req, res){
 // EXIBINDO LOG DO HTTP SERVER 
 console.log("Server running!")
 
-// exibi no log a cada 20 segundos a variavel de ambiente
-while(process.env.DEVOPS){
-  console.log(process.env.DEVOPS);
-  sleep.sleep(20);
+// sleep function
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
+
+// Funcao assincrona que printa a variavel de ambiente
+async function printvalue() {
+  while(process.env.DEVOPS){
+    console.log(process.env.DEVOPS);
+    await sleep(20000);
+  }
+}
+
+// chamando a função para printar o valor da variavel no log
+printvalue()
