@@ -20,6 +20,6 @@ spec:
         image: josecyber/chapter-sysadmin
         envFrom:
         - secretRef:
-            name: chapter-sysadmin-es
+            name: chapter-sysadmin-sec
 
          

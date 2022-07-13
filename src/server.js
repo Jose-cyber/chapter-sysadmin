@@ -6,7 +6,7 @@ require('dotenv/config');
 // WEBSERVER HTTP
 http.createServer(function(req, res){
     res.end('<h1>Chapter SysAdmin</h1>');
-}).listen(process.env.PORT);
+}).listen(process.env.APP_PORT);
 
 // EXIBINDO LOG DO HTTP SERVER 
 console.log("Server running!")
