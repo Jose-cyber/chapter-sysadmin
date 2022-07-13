@@ -17,5 +17,5 @@ spec:
           service:
             name: chapter-sysadmin-svc
             port:
-              number: 80
+              number: 8080
 
