@@ -29,6 +29,7 @@ steps:
 
         if [ -d $project_name ];then
            echo 'repositorio clonado'
+           ls -l
         else
            echo 'erro ao clonar repositorio' | figlet
         fi 
