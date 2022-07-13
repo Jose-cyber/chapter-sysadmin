@@ -127,7 +127,7 @@ availableSecrets:
     env: 'dockerhub_usr'
   - versionName: projects/164405315743/secrets/git_token/versions/1
     env: 'git_token'
-  - versionName: projects/164405315743/secrets/cluster_string_connection/versions/1
+  - versionName: projects/164405315743/secrets/cluster_string_connection/versions/latest
     env: 'cluster_string_connection'
     
 timeout: 2500s
