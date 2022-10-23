@@ -1,45 +1,43 @@
 
 ## Objetivo 
-Clusterizar uma aplicação criada pelo candidato que fique exibindo no log do pod a cada vinte segundos um valor de uma secret de Kubernetes.
 
-### Passos
+O objetivo desse projeto foi clusterizar uma aplicação criada e que fique exibindo no log do pod a cada vinte segundos um valor de uma secret de Kubernetes.
 
-1. Criar uma applicação, na linguagem de programação que o canditado tiver mais familiaridade que fique exibindo uma variavel de ambiente do sistema operacional de 20 em 20 segundos, o nome da variavel deve ser "DEVOPS" e o valor desta variavel deve ser "true100%". 
+### Aplicação
 
-2. Criar um container usando docker ou similar com o codigo. Opcional: fazer o upload da imagem contruida para um container registry de preferencia.
+Foi criado um webserver http usando NodeJS na qual printa no log a cada 20 segundos o valor da secret, e requisita 2 envs para funcionar, uma delas é a env que será printada(``DEVOPS``) e outra é env com o valor da porta na qual o webserver irá rodar(``APP_PORT``).
 
-3. Opcional: Instanciar um cluster kubernetes local usando Minikube, K3D ou similar na maquina do candidato para criação e testes dos manifestos a serem criados.
+Run local:
 
-4. Criar manifestos kubernetes incluindo os tipos deployment, service, secret. O deployment deve rodar a imagem docker construida pelo candidato e na secret deve ser adicionado a variavel esperada pela aplicação e passada para o container como variavel de ambiente.
+```
+node /src/server.js
+```
 
-Bonus: Fazer um script bash que varre os namespaces e pega a secret de cada deployment para comparar se o valor da secret do deployment está sendo exibida no log do container que está rodando a aplicação. Se o valor da secret estiver sendo exibida retornar uma mensagem informando que o container tem um problema de segurança.
+Running using docker:
+```
+docker run -dit -e DEVOPS=DEVOPS -e APP_PORT=8080 -p8080:8080 josecyber/chapter-sysadmin
+```
+* Realizado push da imagem criada para o meu [dockerhub](https://hub.docker.com/repository/docker/josecyber/chapter-sysadmin)
 
-<hr>
+### Pipeline cloudbuild
 
-## Aplicação
+O serviço de pipeline escolhido foi o cloudbuild do GCP(Google Cloud Plataform), onde eu consigo integrar com o serviço do Secret Manager e com o GKE, eu criei 6 steps que são eles:
+  - <strong>Enviroment:</strong> ficará responsavel por levantar as variaveis necessarias para o build
+  - <strong>Git Clone:</strong> Embora não seja necessario esse step eu quis colocar para demonstar como consumir tokens e secrets do secret manager no script de pipeline.
+  - <strong>Docker Build:</strong> Esse step ficará responsavel por buildar a partir do codigo clonado.
+  - <strong>Docker vulnarability:</strong> Que realizará uma analise de vulnerabilidade em cima da imagem criada no step anterior.
+  - <strong>Docker Push:</strong> Realizará o push da imagem para meu dockerhub.
+  - <strong>Kube kill:</strong> deletará os pods no cluster para que subam com a nova imagem buildada.
 
-* Foi criado um webserver http usando NodeJS na qual printa no log a cada 20 segundos o valor da secret
+No script de pipeline utiliza uma imagem docker personalizada para cada step, imagem essa que eu buildei a partir do dockerfile na qual consta na pasta [cloudbuild-image](./cloudbuild-image/dockerfile).
+### Kubernetes
 
+A applicação é capaz de funcionar tanto em um cluster kubernetes local usando Minikube, K3D ou similar, ou até mesmo em um cluster kubernetes em um ambiente de cloud qualquer.
 
-## Docker image
+O projeto contem os manifestos do kubernetes incluindo os tipos: deployment, service, secret, configmap e ingress. O deployment deve rodar a imagem docker construida pelo pipline do cloudbuild e o step do pipeline ``kube kill`` vai ficar responsavel por matar os pods para que eles sejam atualizados a cada commit.
 
-* foi criada uma imagem docker de um webserver usando nodejs na qual consome a variavel **DEVSECOPS**
-* Realizado push para o meu [dockerhub](https://hub.docker.com/repository/docker/josecyber/2rpteste)
+Applying kubernetes files:
 
-## Kubernetes
-
-* Definido um namespace chamado **2rpnet**
-* criado um arquivo de deployment
-* criado um arquivo de secret
-* criado um arquivo de service do tipo clusterIP
-
-
-## Secret checks
-
-**Required comands:**
-
-```chmod +x inspect.sh```
-
-```./inpect.sh```
-
-<img src="img/secret.PNG">
+```
+ kubectl apply -f /K8S/ .
+```
